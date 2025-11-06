@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: ecommerce_db
+    restart: always
+    environment:
+      - POSTGRES_USER=LUIZ_ALMEIDA # Use o mesmo usuário que você definiu da primeira vez
+      - POSTGRES_PASSWORD=ACADEMIAALUCARIA12 # Use a mesma senha que você definiu
+      - POSTGRES_DB=ecommerce_db
+    ports:
+      - "5432:5432"
