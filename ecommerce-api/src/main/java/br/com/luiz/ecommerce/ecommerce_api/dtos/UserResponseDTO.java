@@ -1,5 +1,19 @@
 package br.com.luiz.ecommerce.ecommerce_api.dtos;
 
-public record UserResponseDTO() {
+import java.time.LocalDateTime;
+
+public record UserResponseDTO(
+
+    Long id,
+
+    String nome,
+    
+    String email,
+
+    LocalDateTime dataCadastro,
+    
+    LocalDateTime dataUpdate
+
+) {
 
 }
