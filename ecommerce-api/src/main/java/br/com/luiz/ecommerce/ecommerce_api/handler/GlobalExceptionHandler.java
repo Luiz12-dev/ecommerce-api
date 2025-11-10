@@ -9,6 +9,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(EmailJaCadastradoException.class)
+    public ResponseEntity<String>handleEmailJaCadastradoException(EmailJaCadastradoException ex){
+
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleRuntimeException(RuntimeException ex){
 

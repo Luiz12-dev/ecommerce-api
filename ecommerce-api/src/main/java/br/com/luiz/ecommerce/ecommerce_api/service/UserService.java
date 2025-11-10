@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import br.com.luiz.ecommerce.ecommerce_api.domain.Usuario;
 import br.com.luiz.ecommerce.ecommerce_api.dtos.UserRequestDTO;
 import br.com.luiz.ecommerce.ecommerce_api.dtos.UserResponseDTO;
+import br.com.luiz.ecommerce.ecommerce_api.handler.EmailJaCadastradoException;
 import br.com.luiz.ecommerce.ecommerce_api.repository.UserRepository;
 
 @Service
@@ -24,7 +25,7 @@ public class UserService {
         Optional<Usuario> usuarioExistente = userRepository.findByEmail(userRequestDTO.email());
 
         if(usuarioExistente.isPresent()){
-            throw new RuntimeException("Erro: Email já cadastrado");
+            throw new EmailJaCadastradoException(userRequestDTO.email());
         }
 
         String senhaCriptografada = userRequestDTO.senha(); // Aqui você pode adicionar a lógica de criptografia da senha
