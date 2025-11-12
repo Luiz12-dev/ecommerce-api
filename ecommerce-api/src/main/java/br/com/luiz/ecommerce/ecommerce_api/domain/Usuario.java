@@ -47,6 +47,7 @@ public class Usuario {
     private LocalDateTime dataCadastro;
 
     @UpdateTimestamp
-    private LocalDate dataNascimento;
+    private LocalDate dataAtualizacao;
+    
 
 }
