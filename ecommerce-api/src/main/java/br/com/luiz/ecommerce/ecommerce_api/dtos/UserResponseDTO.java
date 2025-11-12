@@ -10,9 +10,9 @@ public record UserResponseDTO(
     
     String email,
 
-    LocalDateTime dataCadastro,
+    LocalDateTime dataCriacao,
     
-    LocalDateTime dataUpdate
+    LocalDateTime dataAtualizacao
 
 ) {
 
