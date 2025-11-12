@@ -14,7 +14,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -37,17 +36,18 @@ public class Usuario {
     @Column(nullable = false, length = 150)
     private String nome;
 
-    @Email
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @JsonIgnore
+    @Column(nullable = false)
     private String senha;
 
     @CreationTimestamp
-    private LocalDateTime dataCadastro;
+    @Column(name = "data_criacao", updatable = false)
+    private LocalDateTime dataCriacao;
 
     @UpdateTimestamp
-    private LocalDate dataAtualizacao;
-    
+    @Column(name = "data_atualizacao")
+    private LocalDateTime dataAtualizacao;
 
 }
