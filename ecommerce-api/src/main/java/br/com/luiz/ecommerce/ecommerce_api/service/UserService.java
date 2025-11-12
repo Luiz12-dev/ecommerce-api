@@ -41,7 +41,7 @@ public class UserService {
             usuarioSalvo.getId(),
             usuarioSalvo.getNome(),
             usuarioSalvo.getEmail(),
-            usuarioSalvo.getDataCadastro(),
+            usuarioSalvo.getDataCriacao(),
             null
         );
     }
