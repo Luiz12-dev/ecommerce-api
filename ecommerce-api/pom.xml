@@ -31,6 +31,15 @@
 	</properties>
 	<dependencies>
 
+	
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>annotationProcessor</scope>
+		</dependency>
+	
+
+
 		<dependency>
     		<groupId>org.springdoc</groupId>
     		<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -80,4 +89,6 @@
 		</plugins>
 	</build>
 
+
+	
 </project>
