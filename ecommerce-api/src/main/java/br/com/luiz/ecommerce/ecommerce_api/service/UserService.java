@@ -2,6 +2,7 @@ package br.com.luiz.ecommerce.ecommerce_api.service;
 
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.luiz.ecommerce.ecommerce_api.domain.Usuario;
@@ -14,10 +15,11 @@ import br.com.luiz.ecommerce.ecommerce_api.repository.UserRepository;
 public class UserService {
 
     private final UserRepository userRepository;
-
+    private final PasswordEncoder passwordEncoder;
     
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder; 
     }
 
     public UserResponseDTO criarUsuario(UserRequestDTO userRequestDTO) {
@@ -28,7 +30,7 @@ public class UserService {
             throw new EmailJaCadastradoException(userRequestDTO.email());
         }
 
-        String senhaCriptografada = userRequestDTO.senha(); // Aqui você pode adicionar a lógica de criptografia da senha
+        String senhaCriptografada =  passwordEncoder.encode(userRequestDTO.senha()); // Aqui você pode adicionar a lógica de criptografia da senha
 
         Usuario novoUsuario = new Usuario();
         novoUsuario.setNome(userRequestDTO.nome());
