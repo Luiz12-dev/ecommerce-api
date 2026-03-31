@@ -1,8 +1,8 @@
-package com.projeto.e_commerce.Exception;
+package com.projeto.e_commerce.exception;
 
 import java.time.LocalDateTime;
 
-public record StandartErrorDto(
+public record StandardErrorDto(
     LocalDateTime timeStamp,
     Integer status,
     String error,
