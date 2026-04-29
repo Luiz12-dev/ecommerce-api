@@ -1,9 +1,9 @@
 package com.projeto.e_commerce.customer;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,9 +36,10 @@ public class CustomerService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CustomerResponseDto> findAll(Pageable pageable) {
-        return customerRepository.findAll(pageable)
-            .map(CustomerResponseDto::new);
+    public List<CustomerResponseDto> findAll() {
+        return customerRepository.findAll().stream()
+            .map(CustomerResponseDto::new)
+            .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

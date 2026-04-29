@@ -1,9 +1,8 @@
 package com.projeto.e_commerce.product;
 
+import java.util.List;
 import java.util.UUID;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,9 +46,10 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponseProductDto> findAll(Pageable pageable) {
-        return productRepository.findAllByActiveTrue(pageable)
-            .map(ResponseProductDto::new);
+    public List<ResponseProductDto> findAll() {
+        return productRepository.findAllByActiveTrue().stream()
+            .map(ResponseProductDto::new)
+            .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -61,19 +61,21 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponseProductDto> findByCategory(UUID categoryId, Pageable pageable) {
+    public List<ResponseProductDto> findByCategory(UUID categoryId) {
         if (!categoryRepository.existsById(categoryId)) {
             throw new ResourceNotFoundException("Categoria não encontrada com ID: " + categoryId);
         }
 
-        return productRepository.findAllByCategoryIdAndActiveTrue(categoryId, pageable)
-            .map(ResponseProductDto::new);
+        return productRepository.findAllByCategoryIdAndActiveTrue(categoryId).stream()
+            .map(ResponseProductDto::new)
+            .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponseProductDto> searchByName(String name, Pageable pageable) {
-        return productRepository.findAllByNameContainingIgnoreCaseAndActiveTrue(name, pageable)
-            .map(ResponseProductDto::new);
+    public List<ResponseProductDto> searchByName(String name) {
+        return productRepository.findAllByNameContainingIgnoreCaseAndActiveTrue(name).stream()
+            .map(ResponseProductDto::new)
+            .collect(Collectors.toList());
     }
 
     @Transactional

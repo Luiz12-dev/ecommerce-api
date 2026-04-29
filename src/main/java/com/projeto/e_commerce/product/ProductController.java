@@ -1,9 +1,7 @@
 package com.projeto.e_commerce.product;
 
+import java.util.List;
 import java.util.UUID;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,10 +39,10 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
-    @Operation(summary = "Listar produtos", description = "Lista todos os produtos ativos com paginação (público)")
+    @Operation(summary = "Listar produtos", description = "Lista todos os produtos ativos (público)")
     @GetMapping
-    public ResponseEntity<Page<ResponseProductDto>> findAll(Pageable pageable) {
-        Page<ResponseProductDto> products = productService.findAll(pageable);
+    public ResponseEntity<List<ResponseProductDto>> findAll() {
+        List<ResponseProductDto> products = productService.findAll();
         return ResponseEntity.ok(products);
     }
 
@@ -59,15 +57,15 @@ public class ProductController {
     @Operation(summary = "Filtrar por categoria", description = "Lista produtos ativos de uma categoria (público)")
     @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<Page<ResponseProductDto>> findByCategory(@PathVariable UUID categoryId, Pageable pageable) {
-        Page<ResponseProductDto> products = productService.findByCategory(categoryId, pageable);
+    public ResponseEntity<List<ResponseProductDto>> findByCategory(@PathVariable UUID categoryId) {
+        List<ResponseProductDto> products = productService.findByCategory(categoryId);
         return ResponseEntity.ok(products);
     }
 
     @Operation(summary = "Buscar por nome", description = "Pesquisa produtos pelo nome (case insensitive, público)")
     @GetMapping("/search")
-    public ResponseEntity<Page<ResponseProductDto>> searchByName(@RequestParam String name, Pageable pageable) {
-        Page<ResponseProductDto> products = productService.searchByName(name, pageable);
+    public ResponseEntity<List<ResponseProductDto>> searchByName(@RequestParam String name) {
+        List<ResponseProductDto> products = productService.searchByName(name);
         return ResponseEntity.ok(products);
     }
 

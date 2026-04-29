@@ -1,9 +1,7 @@
 package com.projeto.e_commerce.catalog;
 
+import java.util.List;
 import java.util.UUID;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,10 +38,10 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
 
-    @Operation(summary = "Listar categorias", description = "Lista todas as categorias ativas com paginação (público)")
+    @Operation(summary = "Listar categorias", description = "Lista todas as categorias ativas (público)")
     @GetMapping
-    public ResponseEntity<Page<ResponseCategoryDto>> findAll(Pageable pageable) {
-        Page<ResponseCategoryDto> categories = categoryService.findAll(pageable);
+    public ResponseEntity<List<ResponseCategoryDto>> findAll() {
+        List<ResponseCategoryDto> categories = categoryService.findAll();
         return ResponseEntity.ok(categories);
     }
 

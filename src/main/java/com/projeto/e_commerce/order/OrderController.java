@@ -1,9 +1,7 @@
 package com.projeto.e_commerce.order;
 
+import java.util.List;
 import java.util.UUID;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,11 +46,11 @@ public class OrderController {
         return ResponseEntity.ok(order);
     }
 
-    @Operation(summary = "Listar pedidos do cliente", description = "Retorna pedidos paginados de um cliente")
+    @Operation(summary = "Listar pedidos do cliente", description = "Retorna pedidos de um cliente")
     @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
     @GetMapping("/customer/{customerId}")
-    public ResponseEntity<Page<ResponseOrderDto>> findByCustomer(@PathVariable UUID customerId, Pageable pageable) {
-        Page<ResponseOrderDto> orders = orderService.findByCustomer(customerId, pageable);
+    public ResponseEntity<List<ResponseOrderDto>> findByCustomer(@PathVariable UUID customerId) {
+        List<ResponseOrderDto> orders = orderService.findByCustomer(customerId);
         return ResponseEntity.ok(orders);
     }
 

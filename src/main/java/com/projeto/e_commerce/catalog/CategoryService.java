@@ -1,9 +1,9 @@
 package com.projeto.e_commerce.catalog;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +26,9 @@ public class CategoryService {
         }
 
         Category category = Category.builder()
-            .name(req.name())
-            .description(req.description())
-            .build();
+                .name(req.name())
+                .description(req.description())
+                .build();
 
         Category savedCategory = categoryRepository.save(category);
 
@@ -36,15 +36,16 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponseCategoryDto> findAll(Pageable pageable) {
-        return categoryRepository.findAllByActiveTrue(pageable)
-            .map(ResponseCategoryDto::new);
+    public List<ResponseCategoryDto> findAll() {
+        return categoryRepository.findAllByActiveTrue().stream()
+                .map(ResponseCategoryDto::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public ResponseCategoryDto findById(UUID id) {
         Category category = categoryRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada com ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada com ID: " + id));
 
         return new ResponseCategoryDto(category);
     }
@@ -52,13 +53,13 @@ public class CategoryService {
     @Transactional
     public ResponseCategoryDto update(UUID id, RequestCategoryDto req) {
         Category category = categoryRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada com ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada com ID: " + id));
 
         categoryRepository.findByName(req.name())
-            .filter(existing -> !existing.getId().equals(id))
-            .ifPresent(existing -> {
-                throw new DuplicateResourceException("Já existe uma categoria com o nome: " + req.name());
-            });
+                .filter(existing -> !existing.getId().equals(id))
+                .ifPresent(existing -> {
+                    throw new DuplicateResourceException("Já existe uma categoria com o nome: " + req.name());
+                });
 
         category.setName(req.name());
         category.setDescription(req.description());
@@ -71,7 +72,7 @@ public class CategoryService {
     @Transactional
     public void delete(UUID id) {
         Category category = categoryRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada com ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada com ID: " + id));
 
         category.setActive(false);
         categoryRepository.save(category);

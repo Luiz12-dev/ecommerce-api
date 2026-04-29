@@ -1,9 +1,8 @@
 package com.projeto.e_commerce.customer;
 
+import java.util.List;
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,10 +39,10 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(customerDto);
     }
 
-    @Operation(summary = "Listar clientes", description = "Retorna todos os clientes com paginação")
+    @Operation(summary = "Listar clientes", description = "Retorna todos os clientes")
     @GetMapping
-    public ResponseEntity<Page<CustomerResponseDto>> findAll(Pageable pageable) {
-        Page<CustomerResponseDto> customers = customerService.findAll(pageable);
+    public ResponseEntity<List<CustomerResponseDto>> findAll() {
+        List<CustomerResponseDto> customers = customerService.findAll();
         return ResponseEntity.ok(customers);
     }
 
