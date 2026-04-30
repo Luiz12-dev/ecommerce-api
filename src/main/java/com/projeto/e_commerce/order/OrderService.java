@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -117,13 +116,14 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponseOrderDto> findByCustomer(UUID customerId, Pageable pageable) {
+    public List<ResponseOrderDto> findByCustomer(UUID customerId) {
         if (!customerRepository.existsById(customerId)) {
             throw new ResourceNotFoundException("Cliente não encontrado com ID: " + customerId);
         }
 
-        return orderRepository.findAllByCustomerId(customerId, pageable)
-            .map(ResponseOrderDto::new);
+        return orderRepository.findAllByCustomerId(customerId).stream()
+            .map(ResponseOrderDto::new)
+            .collect(java.util.stream.Collectors.toList());
     }
 
     @Transactional

@@ -37,34 +37,39 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            .cors(Customizer.withDefaults())
-            .csrf(csrf -> csrf.disable())
-            .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthEntryPoint))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
+                .cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthEntryPoint))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
 
-                // Swagger / OpenAPI — público
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
+                        // Swagger / OpenAPI — público
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**")
+                        .permitAll()
 
-                // Autenticação — público
-                .requestMatchers("/api/v1/auth/**").permitAll()
+                        // Autenticação — público
+                        .requestMatchers("/api/v1/auth/**").permitAll()
 
-                // Catálogo e Produtos — leitura pública, escrita apenas ADMIN
-                .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/v1/categories/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/v1/categories/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/categories/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/v1/products/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/v1/products/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/products/**").hasRole("ADMIN")
+                        // Catálogo e Produtos — leitura pública, escrita apenas ADMIN
+                        .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/categories/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/categories/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/categories/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/products/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/products/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/products/**").hasRole("ADMIN")
 
-                // Recursos do sistema
-                .requestMatchers("/error", "/favicon.ico").permitAll()
+                        // Recursos do sistema
+                        .requestMatchers("/error", "/favicon.ico").permitAll()
 
-                // Qualquer outro endpoint — precisa estar autenticado
-                .anyRequest().authenticated()
-            );
+                        // Qualquer outro endpoint — precisa estar autenticado
+                        .anyRequest().authenticated());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
