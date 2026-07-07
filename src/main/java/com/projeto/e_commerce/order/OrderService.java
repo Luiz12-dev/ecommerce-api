@@ -69,7 +69,7 @@ public class OrderService {
             if (!product.getActive()) {
                 throw new BusinessRuleException("O produto '" + product.getName() + "' está inativo e não pode ser comprado");
             }
-
+            
             if (product.getStockQuantity() < itemReq.quantity()) {
                 throw new BusinessRuleException(
                     "Estoque insuficiente para o produto '" + product.getName()
